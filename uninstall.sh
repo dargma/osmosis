@@ -10,7 +10,7 @@ for a in "$@"; do
   esac
 done
 cd "${DST:-$(pwd)}"
-rm -f .claude/commands/handoff.md .claude/commands/osmosis.md .claude/hooks/osmosis-session-start.sh
+rm -f .claude/commands/handoff.md .claude/commands/catchup.md .claude/hooks/osmosis-session-start.sh
 python3 - << 'PY'
 import json, os
 p = ".claude/settings.json"
@@ -23,7 +23,7 @@ if os.path.exists(p):
 PY
 if [ "$PURGE" = "1" ]; then rm -rf .osmosis; fi
 # 잔여물 검증
-LEFT=$( { ls .claude/commands/handoff.md .claude/commands/osmosis.md .claude/hooks/osmosis-* 2>/dev/null; \
+LEFT=$( { ls .claude/commands/handoff.md .claude/commands/catchup.md .claude/hooks/osmosis-* 2>/dev/null; \
           grep -l osmosis .claude/settings.json 2>/dev/null; } | wc -l )
 if [ "$LEFT" -eq 0 ]; then
   if [ "$PURGE" = "1" ]; then

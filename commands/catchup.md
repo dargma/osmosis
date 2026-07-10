@@ -3,7 +3,7 @@ description: 세션 중 Osmosis 팀 현황·열린 작업을 다시 조회한다
 allowed-tools: Bash(cat *), Bash(ls *), Bash(grep *), Bash(rg *), Bash(git *), Read, Glob, Grep
 ---
 
-# /osmosis — 팀 현황 다시 보기
+# /catchup — 팀 현황 다시 보기
 
 세션 시작 시 훅이 이미 한 번 주입했지만, 작업 도중 다시 확인하고 싶을 때 쓴다.
 읽기 전용 — 아무것도 쓰지 않는다.
@@ -35,7 +35,7 @@ grep -rl -E "^status:[[:space:]]*(unverified|failed)" .osmosis/journal 2>/dev/nu
 
 ### 3. 필터 (인자가 있을 때)
 `$ARGUMENTS`가 주어졌으면, 2단계 결과를 **module 또는 본문에 그 문자열이 포함된 것만** 남긴다.
-예: `/osmosis table-parser` → table-parser 관련 열린 작업만.
+예: `/catchup table-parser` → table-parser 관련 열린 작업만.
 매칭 0건이면 "해당 조건의 열린 작업 없음 — 안전"이라고 답한다.
 
 ### 4. 상세를 원하면
