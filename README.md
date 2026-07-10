@@ -139,6 +139,6 @@ B는 폐기된 정규식 삽질을 반복하지 않고, A의 상태머신 초안
 
 <div align="center">
 
-**묻지 않아도 스며들고, 찾지 않아도 고여 있다. — Osmosis v0.1.0** · 문의: 조성광 · sk2011.cho@samsung.com · S/W혁신팀(S.LSI)
+**Osmosis v0.1.0** · 문의: 조성광 · sk2011.cho@samsung.com · S/W혁신팀(S.LSI)
 
 </div>
