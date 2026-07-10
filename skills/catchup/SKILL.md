@@ -1,5 +1,7 @@
 ---
-description: 세션 중 Osmosis 팀 현황·열린 작업을 다시 조회한다 (인자로 모듈/키워드 필터)
+name: catchup
+description: 세션 중 Osmosis 팀 현황·열린 작업을 다시 조회한다 (인자로 모듈/키워드 필터). 사용자가 "/catchup", "팀 현황", "열린 작업 뭐 있어", "누가 뭐 하는 중"이라고 물을 때 사용. 읽기 전용.
+argument-hint: "[모듈|키워드]"
 allowed-tools: Bash(cat *), Bash(ls *), Bash(grep *), Bash(rg *), Bash(git *), Read, Glob, Grep
 ---
 

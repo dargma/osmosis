@@ -1,5 +1,6 @@
 ---
-description: 세션 마무리 — 이번 세션의 작업을 Osmosis 팀 메모리에 기록하고 STATUS.md를 갱신한다
+name: handoff
+description: 세션 마무리 — 이번 세션의 작업을 Osmosis 팀 메모리에 기록하고 STATUS.md를 갱신한다. 사용자가 "/handoff", "세션 정리", "인수인계", "마무리 기록"이라고 할 때 사용.
 allowed-tools: Bash(git *), Bash(ls *), Bash(grep *), Bash(rg *), Bash(date *), Read, Write, Glob, Grep
 ---
 

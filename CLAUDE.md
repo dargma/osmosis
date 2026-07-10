@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Osmosis is a **Claude Code plugin** — a team-shared work journal that flows through git. There is no server, DB, or daemon; the only dependencies are `bash` + `git`. Two mechanics:
 
-1. **Record** — `/handoff` (see `commands/handoff.md`) has Claude summarize the session into markdown under a target repo's `.osmosis/journal/{author}/` and regenerate `.osmosis/STATUS.md`.
+1. **Record** — `/handoff` (see `skills/handoff/SKILL.md`) has Claude summarize the session into markdown under a target repo's `.osmosis/journal/{author}/` and regenerate `.osmosis/STATUS.md`. A read-only `/catchup` skill (`skills/catchup/SKILL.md`) re-shows status mid-session.
 2. **Inject** — the `SessionStart` hook (`hooks/session-start.sh`) prints `STATUS.md` plus module-collision warnings at the start of every session, so a teammate's Claude reads it automatically.
 
 Journals are shared purely by `git push`/`pull`. **This repo is the plugin source itself** — the `.osmosis/` directory that end users get lives in *their* repos, not here (except `memory/STATUS.md`, the seed template).
@@ -38,7 +38,7 @@ No test suite. To validate the hook, run it inside a git repo that has a `.osmos
 bash hooks/session-start.sh          # from a target repo root
 ```
 
-It prints the injected block and a `⚡ Nms` timing footer. Verify a broken/missing `.osmosis/` exits cleanly (code 0, no session-breaking output). The UI/docs strings are Korean — keep that voice when editing `commands/handoff.md` and the echo strings.
+It prints the injected block and a `⚡ Nms` timing footer. Verify a broken/missing `.osmosis/` exits cleanly (code 0, no session-breaking output). The UI/docs strings are Korean — keep that voice when editing `skills/handoff/SKILL.md` and the echo strings.
 
 ## Releasing
 

@@ -50,7 +50,7 @@ claude plugin marketplace add <ai-factory-git-url>/osmosis
 /plugin install osmosis@slsi
 ```
 
-끝. 커맨드와 훅이 자동 등록된다. 첫 `/handoff` 때 `.osmosis/`도 알아서 생긴다.
+끝. 스킬(`/handoff`·`/catchup`)과 훅이 자동 등록된다. 첫 `/handoff` 때 `.osmosis/`도 알아서 생긴다.
 (플러그인이 막힌 환경이면 아래 [수동 설치](#수동-설치) 참고.)
 
 ## 🎮 사용법
@@ -102,7 +102,7 @@ B는 폐기된 정규식 삽질을 반복하지 않고, A의 상태머신 초안
 
 ```
 /plugin marketplace update osmosis   # ✨ 업데이트 — 팀 기록·설정 전부 보존
-/plugin uninstall osmosis            # 🧼 제거 — 커맨드·훅 깨끗이 사라짐. 팀 기록(.osmosis/)은 남는다
+/plugin uninstall osmosis            # 🧼 제거 — 스킬·훅 깨끗이 사라짐. 팀 기록(.osmosis/)은 남는다
 ```
 
 기록까지 지우려면 `rm -rf .osmosis` 한 줄. 그게 전부다.
