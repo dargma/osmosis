@@ -11,6 +11,7 @@ echo "🧪 Osmosis 설치 → $DST"
 
 mkdir -p .claude/commands .claude/hooks .osmosis/journal
 cp "$SRC/commands/handoff.md"      .claude/commands/handoff.md
+cp "$SRC/commands/osmosis.md"      .claude/commands/osmosis.md
 cp "$SRC/hooks/session-start.sh"   .claude/hooks/osmosis-session-start.sh
 chmod +x .claude/hooks/osmosis-session-start.sh
 [ -f .osmosis/STATUS.md ] || cp "$SRC/memory/STATUS.md" .osmosis/STATUS.md

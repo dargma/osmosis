@@ -31,7 +31,7 @@
 
 **주말 내내 아무도 몰랐다. A의 Claude는 알고 있었는데.**
 
-각자의 Claude는 똑똑해지는데 기억은 각자 노트북에 갇혀 있다.
+각자의 Claude는 똑똑해지는데 기억은 각자 작업 공간에 갇혀 있다.
 그래서 팀은 같은 버그를 두 번 잡고, 같은 막다른 길을 두 번 걷는다.
 
 Osmosis는 그 기억을 git으로 흘려보낸다. push하면, 팀 전체의 Claude가 안다.
@@ -47,7 +47,7 @@ Osmosis는 그 기억을 git으로 흘려보낸다. push하면, 팀 전체의 Cl
 
 ```
 claude plugin marketplace add <ai-factory-git-url>/osmosis
-/plugin install osmosis@osmosis
+/plugin install osmosis@slsi
 ```
 
 끝. 커맨드와 훅이 자동 등록된다. 첫 `/handoff` 때 `.osmosis/`도 알아서 생긴다.
@@ -57,6 +57,7 @@ claude plugin marketplace add <ai-factory-git-url>/osmosis
 
 ```
 /handoff     ← 세션 끝날 때. 이게 전부다.
+/osmosis     ← 세션 중 팀 현황·열린 작업 다시 보기 (필터: /osmosis <모듈|키워드>)
 ```
 
 시작할 땐 할 일 없다 — 훅이 팀 현황과 충돌 경고를 알아서 넣어준다.
@@ -83,7 +84,7 @@ verified_by: null
 정규식 분리 방식 시도 → 중첩에서 깨져 폐기. 상태머신으로 선회.
 ```
 
-A는 이걸 feature 브랜치에 커밋하고 push한 뒤 노트북을 덮는다.
+A는 이걸 feature 브랜치에 커밋하고 push한 뒤 작업 공간을 정리한다.
 
 **월요일 09:00 · B의 세션**
 B가 Claude Code를 켜자, 아무것도 안 했는데 세션 첫 화면에 뜬다:
@@ -137,8 +138,8 @@ B는 폐기된 정규식 삽질을 반복하지 않고, A의 상태머신 초안
 **시작할 땐 뭘 해야 하나?** — 아무것도. Claude Code를 켜면 훅이 팀 현황·충돌 경고를
 알아서 세션 첫 화면에 넣어준다. 당신이 칠 명령어는 없다.
 
-**세션 도중에 현황을 다시 보고 싶으면?** — 전용 명령어는 아직 없다. 직접 보면 된다:
-`cat .osmosis/STATUS.md` (요약) 또는 `grep -rl "status: unverified" .osmosis/journal` (열린 작업 전부).
+**세션 도중에 현황을 다시 보고 싶으면?** — `/osmosis` 를 친다. 팀 현황 요약과 열린 작업을
+다시 보여준다. 모듈/키워드로 좁히려면 `/osmosis table-parser` 처럼 인자를 준다.
 
 **충돌 경고가 떴다. 어떻게?** — 그 모듈을 건드릴 거면, 경고에 찍힌 엔트리
 (`.osmosis/journal/…`)를 먼저 열어 읽어라. 이어받을지, 다시 짤지 판단이 선다.
