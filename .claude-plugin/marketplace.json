@@ -1,0 +1,14 @@
+{
+  "name": "osmosis",
+  "owner": {
+    "name": "RAG평가플랫폼팀"
+  },
+  "plugins": [
+    {
+      "name": "osmosis",
+      "source": "./",
+      "description": "Osmosis, 팀의 오아시스 — 팀 Claude 공유 작업일지 + 충돌 경고",
+      "version": "0.1.0"
+    }
+  ]
+}

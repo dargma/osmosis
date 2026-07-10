@@ -1,0 +1,9 @@
+{
+  "name": "osmosis",
+  "description": "Osmosis, 팀의 오아시스 — 세션 기록을 git으로 공유하고, 세션 시작 시 팀 현황과 충돌 경고를 자동 주입",
+  "version": "0.1.0",
+  "author": {
+    "name": "RAG평가플랫폼팀"
+  },
+  "hooks": "./hooks/hooks.json"
+}
