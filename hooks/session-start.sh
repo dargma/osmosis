@@ -7,16 +7,22 @@ OSM="$ROOT/.osmosis"
 [ -d "$OSM" ] || exit 0
 
 ME="$(git config user.name 2>/dev/null | tr ' ' '-' | tr '[:upper:]' '[:lower:]')"
-[ -n "$ME" ] || ME="$(whoami)"
+ME_UNSET=0
+if [ -z "$ME" ]; then ME="$(whoami)"; ME_UNSET=1; fi
 
+# 매 세션 원격 최신화(최대 3초). 오프라인/대형 repo에서 지연되면 timeout으로 끊고
+# 로컬 캐시 기준으로 진행 — 충돌 경고가 살짝 낡을 뿐 세션은 막지 않는다.
 command -v timeout >/dev/null 2>&1 && timeout 3 git -C "$ROOT" fetch --quiet 2>/dev/null
 BEHIND=$(git -C "$ROOT" rev-list --count HEAD..@{upstream} 2>/dev/null || echo 0)
 
 echo "=== OSMOSIS — 팀의 오아시스 ==="
 [ "${BEHIND:-0}" -gt 0 ] && echo "[알림] 원격에 새 커밋 ${BEHIND}건 — STATUS가 구버전일 수 있음. git pull 권장."
+[ "$ME_UNSET" = "1" ] && echo "[주의] git user.name 미설정 → 작성자를 '$ME'로 추정. 공용/컨테이너 환경이면 팀원 구분이 안 돼 충돌 경고가 누락될 수 있음. git config user.name 설정 권장."
 
 if [ -f "$OSM/STATUS.md" ]; then
-  head -n 60 "$OSM/STATUS.md"
+  # 2KB 하드 가드: handoff가 상한을 어겨도 세션 토큰 예산을 지킨다.
+  head -n 60 "$OSM/STATUS.md" | head -c 2048
+  echo
 else
   echo "(STATUS.md 없음 — 첫 /handoff 때 생성됨)"
 fi
@@ -25,6 +31,8 @@ fi
 # 소스 1: 현재 브랜치 작업트리 (최근 30일)
 # 소스 2: 원격의 다른 브랜치들 (최근 30일 내 커밋된 브랜치, 최대 20개)
 #         → 머지 전 feature 브랜치의 작업도 보이게 (브랜치 사각지대 제거)
+#         주: 소스2는 브랜치 committerdate로만 컷오프하고 엔트리별 mtime 필터는 없다
+#         (git show는 mtime이 없음). 브랜치가 30일 내 활성이면 열린 엔트리로 간주.
 scan_entry() {  # stdin: 엔트리 내용 → "module|author|id" (열린 상태일 때만)
   awk -v me="$ME" '
     /^status:[[:space:]]*(unverified|failed)[[:space:]]*$/ {open=1}

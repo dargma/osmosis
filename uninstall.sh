@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 # Osmosis 제거. 팀 기록은 기본 보존, 전체 삭제는 --purge
+# 사용법: uninstall.sh [--purge] [프로젝트루트]  (install.sh와 동일하게 경로는 위치인자)
 set -e
-cd "${2:-$(pwd)}"
+PURGE=0; DST=""
+for a in "$@"; do
+  case "$a" in
+    --purge) PURGE=1 ;;
+    *) DST="$a" ;;
+  esac
+done
+cd "${DST:-$(pwd)}"
 rm -f .claude/commands/handoff.md .claude/hooks/osmosis-session-start.sh
 python3 - << 'PY'
 import json, os
@@ -13,12 +21,12 @@ if os.path.exists(p):
         "osmosis" in h.get("command","") for h in e.get("hooks", []))]
     json.dump(s, open(p, "w"), indent=2, ensure_ascii=False)
 PY
-if [ "${1:-}" = "--purge" ]; then rm -rf .osmosis; fi
+if [ "$PURGE" = "1" ]; then rm -rf .osmosis; fi
 # 잔여물 검증
 LEFT=$( { ls .claude/commands/handoff.md .claude/hooks/osmosis-* 2>/dev/null; \
           grep -l osmosis .claude/settings.json 2>/dev/null; } | wc -l )
 if [ "$LEFT" -eq 0 ]; then
-  if [ "${1:-}" = "--purge" ]; then
+  if [ "$PURGE" = "1" ]; then
     echo "🧼 완전 삭제 검증 완료 — 흔적: 0개. 설치 전과 동일합니다."
   else
     echo "🧼 제거 검증 완료 — 도구 흔적: 0개. (팀 기록 .osmosis/ 만 보존, --purge로 전체 삭제)"

@@ -72,6 +72,53 @@ claude plugin marketplace add <ai-factory-git-url>/osmosis
 시작할 땐 할 일 없다 — 훅이 팀 현황과 충돌 경고를 알아서 넣어준다.
 빠른지 궁금하면 세션 로그를 보면 된다: `=== /OSMOSIS ⚡ 9ms ===`
 
+### 실사용 시나리오 — 금요일의 A, 월요일의 B
+
+**금요일 18:00 · A의 세션**
+`table-parser`를 절반쯤 만들다 테스트를 못 돌리고 퇴근하려는 참. 세션 끝에:
+
+```
+A: /handoff
+```
+
+Claude가 이번 세션을 되짚어 엔트리를 남긴다 (요지):
+
+```markdown
+module: src/table-parser
+status: unverified          # 테스트 못 돌림 → "했다"지 "됐다"가 아니다
+verified_by: null
+## 결과
+파싱 로직 초안. 중첩 헤더 케이스 미검증.
+## 기각/함정
+정규식 분리 방식 시도 → 중첩에서 깨져 폐기. 상태머신으로 선회.
+```
+
+A는 이걸 feature 브랜치에 커밋하고 push한 뒤 노트북을 덮는다.
+
+**월요일 09:00 · B의 세션**
+B가 Claude Code를 켜자, 아무것도 안 했는데 세션 첫 화면에 뜬다:
+
+```
+=== OSMOSIS — 팀의 오아시스 ===
+[열린 작업 — 착수 전 확인]
+- src/table-parser : kim-a 의 미검증/실패 엔트리 (osm-20260709-ab12)
+→ 이 모듈을 건드릴 거면, 해당 엔트리를 먼저 읽고 중복/충돌 여부를 사용자에게 알릴 것.
+=== /OSMOSIS ⚡ 12ms ===
+```
+
+```
+B: table-parser 새로 구현할게
+Claude: 잠깐, kim-a 가 지난주 이 모듈을 미검증 상태로 열어뒀습니다.
+        정규식 분리 방식은 이미 시도했다 중첩 헤더에서 깨져 폐기됐어요.
+        이어받으시겠어요, 아니면 처음부터 다시?
+```
+
+**주말 내내 아무도 몰랐던 걸, B의 Claude가 세션 첫 줄에서 말해준다.**
+B는 폐기된 정규식 삽질을 반복하지 않고, A의 상태머신 초안을 이어받는다.
+
+> 팁: 위 경고는 **머지를 안 기다린다.** A가 feature 브랜치에 push한 순간부터,
+> 훅이 원격 브랜치 저널까지 스캔해 B에게 보인다.
+
 ## 🧹 관리 — 전부 Claude Code 명령으로
 
 ```
@@ -81,23 +128,6 @@ claude plugin marketplace add <ai-factory-git-url>/osmosis
 
 기록까지 지우려면 `rm -rf .osmosis` 한 줄. 그게 전부다.
 부담 없이 지울 수 있어야, 부담 없이 깔 수 있다.
-
-## 원리 (20초)
-
-<img src="assets/hero.svg" alt="아키텍처: 금요일 A의 handoff가 월요일 B의 Claude에 자동 주입되는 흐름" width="100%"/>
-
-```
-.osmosis/
-├── STATUS.md       팀 현황 2KB — 매 세션 자동 주입
-└── journal/이름/    1작업 = 1파일 — merge conflict 원천 차단
-```
-
-브랜치도 고려돼 있다: 기록은 작업 브랜치에 커밋되고 PR 머지 때 main으로 합류하지만,
-**충돌 경고는 머지를 기다리지 않는다** — 훅이 원격의 다른 브랜치 저널까지 스캔하므로,
-동료가 feature 브랜치에 push한 순간부터 보인다. (push 전 로컬 작업만은 물리적으로 불가.)
-
-frontmatter(id·module·status·verified_by)는 나중에 200명 규모·벡터DB로
-가더라도 그대로 승격되게 설계했다. 지금 4명이어도 데이터는 안 버린다.
 
 ## 수동 설치
 
@@ -119,6 +149,6 @@ frontmatter(id·module·status·verified_by)는 나중에 200명 규모·벡터D
 
 <div align="center">
 
-**묻지 않아도 스며들고, 찾지 않아도 고여 있다. — Osmosis v0.1.0** · 문의: RAG평가플랫폼팀
+**묻지 않아도 스며들고, 찾지 않아도 고여 있다. — Osmosis v0.1.0** · 문의: 조성광 · sk2011.cho@samsung.com · S/W혁신팀(S.LSI)
 
 </div>
